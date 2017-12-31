@@ -1,6 +1,7 @@
 \documentclass[10pt]{report}
 \parindent0pt  \parskip10pt
 \pagestyle{headings}
+\usepackage{graphicx}
 
  \renewcommand{\familydefault}{\sfdefault}
 
@@ -94,6 +95,52 @@ V = (0.02)(50)
 \end{equation}
 
 and solving for V, we get 1V. Thats it - in our fictional\footnote{The values for this example were chosen to make nice round numbers, but in reality aren't far off - a typical red LED expects around 0.02A of current and provides somewhere between 40-50$\Omega$ of resistance.} example, we need to find a 1V battery to properly power our LED.
+
+\part{Build a RetroComputer}
+\chapter{About our Computer}
+\section{Key Components}
+
+\subsection{Processor}
+For this project, we'll be using a Zilog Z80 CPU. Why? Why not! It's one of the classic processors from the early home computer days (being found in the Radio Shack TRS-80 line, the ZX Spectrum and other Sinclair Research computers, and as a co-processor in many, many other systems, not to mention as the heart of many classic arcade games). While one could debate the merits of the Z80 vs. the 6502 vs. whatever other older processor you want to pick - and arguably, the 6502 is a strong processor and a popular choice - we're going to take the Z80 as our decision and more forward. The concepts we learn here can be applied to any of these other processors should you wish to use on in your own design.
+
+It does appear that the Z80 is easier to find online for sale, and at a lower price, which doesn't hurt. 
+
+The Z80 comes in many variants. We are specifically using Z80 part number \textbf{Z0840004PSC}, which means that our version of the Z80 has some specific traits:
+
+\begin{itemize}
+\item The processor is designed to run at speeds up to 4Mhz.
+\item The processor is packaged in a 40 pin Dual Inline Package (DIP), which makes breadboarding and building our computer much easier than working with other IC package types.
+\item The processor is built on NMOS technology, which will become important when we determine the components to interface to the processor.
+\item The item is the "commercial" variant of the Z80. This is in contrast to the "industrial" and "military" versions, which are hardened to withstand harsher environments.
+\end{itemize}
+
+Otherwise, it's a Z80, so its method of operation, instruction set, etc. is the same as any other Z80 chip. For example, Jameco (www.jameco.com), as of this writing, sells new the 6Mhz version of this chip (Jameco part number 35705). They also have a CMOS variant that runs at 2.5MHz (Jameco part number 35561). If you can't find the exact part number I am using, any of these variants is fine\footnote{The 2.5MHz CMOS version is actually quite attractive; it is less expensive and requires less power.}. The key is the packaging and the logic level, which we are expecting to be +5V / TTL compatible. 
+
+\subsection{The Z80 Datasheet}
+
+How can we be sure if the Z80 we are using is appropriate? That it is a +5V device with TTL compatible logic levels? The vendor should have the datasheet available for the specific part you are looking at, and in that datasheet you will look for a section called "DC Characteristics". From that section, I've extracted part of the relevant table (the table in the datasheet will have more rows that what I am showing here):
+
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|c|c|c|c|l|}
+\hline
+\multicolumn{7}{|l|}{$V_{cc}$ $5V$ $\pm 5\%$ unless otherwise specified}\\
+\hline
+\textbf{SYMBOL} & \textbf{PARAMETER} & \textbf{MIN.} & \textbf{TYP.} & \textbf{MAX.} & \textbf{UNIT} & \textbf{TEST CONDITION} \\
+\hline
+$V_{ILC}$ & Clock Input Low Voltage & $-0.3$ & & $0.8$ & $V$ & \\
+\hline
+$V_{IHC}$ & Clock Input High Voltage & $V_{cc} - 0.6$ & & $V_{cc} + 0.3$ & $V$ & \\
+\hline
+$V_{IL}$ & Input Low Voltage & $-0.3$ & & $0.8$ & $V$ & \\
+\hline
+$V_{IH}$ & Input High Voltage & $2.0$ & & $V_{cc}$ & $V$ & \\
+\hline
+$V_{OL}$ & Output Low Voltage & & & $0.4$ & $V$ & $I_{OL} = 1.8mA$ \\
+\hline
+$V_{OH}$ & Output High Voltage & $2.4$ & & & $V$ & $I_{OH} = -250\mu A$ \\
+\hline
+\end{tabular}}
 
 
 
