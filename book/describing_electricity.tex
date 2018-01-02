@@ -1,0 +1,76 @@
+\section{Describing  and Measuring Electricity}
+
+The concepts surrounding electricity and its behavior in a circuit are rich and complex; fortunately, we can limit what we need to understand to a handful of core terms and ideas. A full study of electric charge and electromagnetism is beyond the scope of this book and certainly well beyond what you will need in order to understand the circuits presented and to design circuits of your own. We will focus first on the three key terms we need - \textit{electro-motive force}, also known as emf and measured in \textbf{volts}, \textit{electric current}, a measure of quantity represented as \textbf{amps}, and \textit{impedance}, the resistance of an electric circuit as measured in \textbf{ohms}.
+
+These terms - \textbf{volts}, \textbf{amps}, and \textbf{ohms} - are likely familiar, and volts in particular are used frequently and colloquially. They are also often used \textit{incorrectly} (again, volts in particular, which is often incorrectly used as a measure of quantity, such as "Be careful around that outlet, 110 volts is a lot of electricity!"). We'll define the basic terms here, then move on to some examples:
+
+\begin{itemize}
+\item \textbf{Electro-Motive Force} - think of electro-motive force, or emf, as a measure of strength (technically it is a measure of \textit{potential}). When we compare sources of electricity, such as different batteries or an electrical outlet in our home, one of the things we are chiefly interested in is how much work or force can be done by the electricity coming from that source. We measure this force or potential in volts, which can be positive or negative, and we work with volts as a relative measure.
+\item \textbf{Electric Current} - think of this item as a measure of quantity, as it is a measure of the number of electrons that move through a point in our circuit over a given time. Our unit here is the amp. While an amp represents a specific quantity of electrons (known as a \textit{joule}), that specific quantity is not really important to us. We'll be using amps to understand the  requirements and limits of the components we use and the circuits we build. 
+\item \textbf{Impedance} - impedance, or resistance\footnote{This is one of these areas where we are simplifying concepts. Technically, the terms \textit{resistance} and \textit{impedance} represent two different things, with one being a more general case of the other. For our purposes, we can treat them as synonyms.}, tells us how much effort or force is required to be overcome in order for a circuit we build or a component we use to perform it's work. You can almost think of impedance as a measure of difficulty. Impedance is measured in ohms and is also referred to as \textit{load}.
+\end{itemize}
+
+These are the three basic ideas that we will leverage throughout all of our work, and are three concepts that balance each other out. We construct a circuit that presents a load, and provide that circuit with a source of energy whose electro-motive force is sufficient to "overcome" that load. By overcoming and powering that load, we cause electricity to move through the circuit; we can measure the amount of electricity moving through the circuit by measuring our current in amps.
+
+When referring to the above three terms in formulas, we use the letter \textit{I} to represent current (amps), the letter \textit{R} to represent resistance (ohms), and \textit{V} to represent volts or electro-motive force. The relationship between these three measures is beautifully elegant, and expressed in something known as Ohm's Law:
+
+\begin{equation}
+I = \frac{V}{R}
+\end{equation}
+
+This law or equation states that current is equal to force divided by resistance; put another way, the current in a circuit is equal to the force of the power source divided by the resistance of the load we are powering. If \textit{V = 1} and \textit{R = 1} - meaning that we have a circuit that presents 1 ohm of resistance and a battery that can produce 1 volt of electro-motive force, then we can plug in to our equation:
+
+\begin{equation}
+I = \frac{1}{1}
+\end{equation}
+
+and, in solving for I, see that 1 / 1 = 1 or 1 amp. So a circuit with a resistance of 1 ohm, powered by a battery that can produce 1 volt of force, we succeed in moving 1 amp through that circuit. 
+
+Hang tight, we will get to some practical examples of this soon. First, let's try making some changes. Let's assume that we our battery, instead of producing 1 volt, can actually produce 9 volts. Also, for brevity, we will switch here to using V for volts, A for amps, and  $\Omega$ for ohms.
+
+\begin{equation}
+I = \frac{9}{1}
+\end{equation}
+
+Dividing 9 by 1 shows that our current \textit{I} is now 9A. By increasing the potential of the battery but keeping the needs of the circuit the same, we are causing more electricity to flow through the circuit. Lets say that we add some more components to our circuit, and the load goes up:
+
+\begin{equation}
+I = \frac{9}{2}
+\end{equation}
+
+By doubling the load, we cut the amount of current \textit{I} in half to 4.5A. 
+
+Hopefully this is fairly clear - for any given circuit or load, the more potential created by the battery the more current will flow. This is why the potential or force of our power source will become critical - we need to ensure that we are matching the potential we apply to a load with what that load can tolerate. Let's try a simple example with a batter and a LED\footnote{A LED, or \textit{light-emitting diode}. In this example, we are referring to a simple LED light, not an LED display or anything complicated like that.}
+
+\begin{itemize}
+\item We have a battery that can produce 9V of potential.
+\item We have an LED that presents 50$\Omega$ of resistance.
+\end{itemize}
+
+\begin{equation}
+I = \frac{9}{50}
+\end{equation}
+
+Solving for \textit{I}, we see we will be passing 0.18A of current. However, if we were to look at the datasheet for our LED\footnote{Pretty much every electronic component we will work with will have a datasheet available that describes its operation and its requirements. They are generally freely available from the seller and/or the manufacturer.} we would see that 0.18A of current is \textit{significantly more} than the LED can handle. This much electricty moving through the LED will literally burn it up! In our example, or datasheet tells us that the LED has a \textit{maximum current} of 0.02A. 
+
+We can't change the resistance of the LED - that's fixed. We know the LED has a maximum current rating that it can tolerate of 0.2A. It also has a minimum current rating, under which no damage will occur but the LED won't light, so we can't just arbitrarily reduce the current or we may have an useless circuit. But somehow, we have to limit the amount of current to 0.2A so we can get the LED to light up, not fry.
+
+This brings us to alternate forms of Ohm's law. We can rearrange the formula two different ways, depending on what we want to solve for. If we needed to calculate resistance, we could use this form:
+
+\begin{equation}
+R = \frac{V}{I}
+\end{equation}
+
+If we know the potential and we already know the amount of current, we can determine what the resistance of our circuit must be. In this example, we know what the resistance is, and we know how much current we can allow, so we need to calculate the property battery to use:
+
+\begin{equation}
+V = IR
+\end{equation}
+
+If we multiply current by resistance, we will get volts. Plugging in the values from our example:
+
+\begin{equation}
+V = (0.02)(50)
+\end{equation}
+
+and solving for V, we get 1V. Thats it - in our fictional\footnote{The values for this example were chosen to make nice round numbers, but in reality aren't far off - a typical red LED expects around 0.02A of current and provides somewhere between 40-50$\Omega$ of resistance.} example, we need to find a 1V battery to properly power our LED.
