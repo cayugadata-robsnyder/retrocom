@@ -66,3 +66,28 @@ Some comments:
 \end{itemize}
 
 It looks like there are a number of pins we can either safely ignore, or simply tie to either +5V or ground. And although we didn't list them, we do need to provide +5V of power and make a ground connection. 
+
+\subsection{Schematic}
+\begin{center}
+\includegraphics[height=10cm]{first_z80_schematic.png}
+\end{center}
+
+Let's walk through the schematic connection by connection:
+
+\begin{itemize}
+\item Address lines $A_{0}$ through $A_{3}$ are connected to a resistor then to an LED. These pins will provide $+5V$ when on, so we need to be sure we connect to the proper side of the LED (the longer wire on an LED is positive). The other side of the LED goes into ground\footnote{The resistor can vary depending on the LED, but assuming you are using a standard red LED, a resistor of around 220 ohms should be fine. The purpose of the resistor is to drop some of the voltage, as putting $+5V$ directly on the LED can and probably will burn it out, imediatly if not eventually.}.
+\item We need to simulate a zero on each data line, so we tie each line to ground. We can't leave the line open; it will float around and may or may not end up as a low or zero. We could just tie it directly to ground, but we insert a 330 ohm resistor to limit the amount of current that the Z80 has to try and provide. So - data lines $D_{0}$ through $D_{7}$ each go to a resistor then to ground.
+\item $WAIT$, $INT$, $NMI$, and $BUSRQ$ All need to be turned off. They are active \textbf{low}, so we need to provide a logic level high to turn them off. They are all connected through a resistor to the $+5V$ supply\footnote{In this case, the resistor is not really necessary annd if fact will drop the voltage a little but I left it in to be consistent with what I really did while building this.}.
+\item In order to help debug, I added a LED to the $HALT$ line. This is also active \textbf{low}, so when the LED is lit, HALT is actually \textit{off}. Like the address lines, it is tied through a voltage dropping resistor then the positive side of an LED, then on to ground.
+\item The $CLK$ is driven directly by the Arduino; see the Arduino code below for more information.
+\item The $RESET$ is also driven by the Arduino. Note that in this case, we need to pull the line to zero to enable reset (again, active \textbf{low}). Turning the Arduino pin "on" turns off reset by providing $+5V$, but turning the Arduino pin "off" doesn't pull the pin low, it just stops sending $+5V$. We need to tie the pin to ground, through a current limiting resistor, to enable reset\footnote{Remember, input pins float when unconnected, and when the Arduino output is "off", the pin is effectively unconnected. This resistor pulls it low when the Arduino pin is "off", and is basically ignored when the Arduino pin is "on".}.
+\item $GND$ and $VCC$ are connected to ground and $+5V$ respectively, through a decoupling capacitor\footnote{The purpose of the capacitor is to provide smoother current to the Z80. As the Z80 processes instructions, it's current needs will rise and fall. The capacitor acts as buffer to ensure there is enough current available at all times. At the slow speeds we are running, yes, the Z80 will probably work without it, but as we speed up and as we add more components, we need this capacitor there to increase reliability.}.
+\end{itemize}
+
+Ground and $+5V$ are supplied to the Z80 by the Arduino itself. The Z80 doesn't require much power and the Arduino can easily source enough current.
+
+\subsection{Arduino Code}
+The following code is loaded onto the Arduino:
+
+\lstset{numbers=left, frame=single, breaklines=true, basicstyle=\ttfamily\scriptsize}
+\lstinputlisting{z80_first_bootsrap.ino}
